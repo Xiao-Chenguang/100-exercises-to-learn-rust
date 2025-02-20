@@ -1,6 +1,6 @@
 // TODO: implement the necessary traits to make the test compile and pass.
 //  You *can't* modify the test.
-
+#[derive(Clone,Copy,PartialEq,Debug)]
 pub struct WrappingU32 {
     value: u32,
 }
@@ -8,6 +8,19 @@ pub struct WrappingU32 {
 impl WrappingU32 {
     pub fn new(value: u32) -> Self {
         Self { value }
+    }
+}
+
+// trait Add<T> {
+//     type Output;
+//     fn add(self, rhs:T) -> T;
+// }
+impl std::ops::Add<WrappingU32> for WrappingU32 {
+    type Output = WrappingU32;
+    fn add(self,rhs:WrappingU32) -> Self::Output {
+        WrappingU32 {
+            value: self.value + rhs.value
+        }
     }
 }
 
