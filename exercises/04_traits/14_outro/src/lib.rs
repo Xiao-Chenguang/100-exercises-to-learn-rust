@@ -10,45 +10,55 @@
 // Tests are located in the `tests` folder—pay attention to the visibility of your types and methods.
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub struct SaturatingU16 {
-    value:u16,
+    value: u16,
 }
 
 impl From<u16> for SaturatingU16 {
     fn from(value: u16) -> Self {
-        SaturatingU16{value}
+        SaturatingU16 { value }
     }
 }
 impl From<&u16> for SaturatingU16 {
     fn from(value: &u16) -> Self {
-        SaturatingU16{value:*value}
+        SaturatingU16 { value: *value }
     }
 }
 impl From<u8> for SaturatingU16 {
     fn from(value: u8) -> Self {
-        SaturatingU16{value:value as u16}
+        SaturatingU16 {
+            value: value as u16,
+        }
     }
 }
 impl From<&u8> for SaturatingU16 {
     fn from(value: &u8) -> Self {
-        SaturatingU16{value:*value as u16}
+        SaturatingU16 {
+            value: *value as u16,
+        }
     }
 }
 impl std::ops::Add<SaturatingU16> for SaturatingU16 {
     type Output = SaturatingU16;
-    fn add(self, rhs:SaturatingU16) -> Self {
-        SaturatingU16{value:self.value.saturating_add(rhs.value)}
+    fn add(self, rhs: SaturatingU16) -> Self {
+        SaturatingU16 {
+            value: self.value.saturating_add(rhs.value),
+        }
     }
 }
 impl std::ops::Add<&SaturatingU16> for SaturatingU16 {
     type Output = SaturatingU16;
-    fn add(self, rhs:&SaturatingU16) -> Self {
-        SaturatingU16{value:self.value.saturating_add(rhs.value)}
+    fn add(self, rhs: &SaturatingU16) -> Self {
+        SaturatingU16 {
+            value: self.value.saturating_add(rhs.value),
+        }
     }
 }
 impl std::ops::Add<u16> for SaturatingU16 {
     type Output = SaturatingU16;
-    fn add(self, rhs:u16) -> Self {
-        SaturatingU16{value:self.value.saturating_add(rhs)}
+    fn add(self, rhs: u16) -> Self {
+        SaturatingU16 {
+            value: self.value.saturating_add(rhs),
+        }
     }
 }
 
