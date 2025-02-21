@@ -9,6 +9,11 @@ use ticket_fields::{TicketDescription, TicketTitle};
 pub struct TicketStore {
     tickets: Vec<Ticket>,
 }
+impl TicketStore {
+    fn iter(&self) -> core::slice::Iter<Ticket> {
+        self.tickets.iter()
+    }
+}
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Ticket {
