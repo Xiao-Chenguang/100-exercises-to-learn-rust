@@ -5,6 +5,13 @@ use ticket_fields::{TicketDescription, TicketTitle};
 pub struct TicketStore {
     tickets: Vec<Ticket>,
 }
+impl<'a> IntoIterator for &'a TicketStore {
+    type Item = &'a Ticket;
+    type IntoIter = std::slice::Iter<'a, Ticket>;
+    fn into_iter(self) -> Self::IntoIter {
+        self.tickets.iter()
+    }
+}
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Ticket {

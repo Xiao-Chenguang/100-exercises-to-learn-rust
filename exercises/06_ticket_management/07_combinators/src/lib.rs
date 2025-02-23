@@ -6,6 +6,14 @@ use ticket_fields::{TicketDescription, TicketTitle};
 pub struct TicketStore {
     tickets: Vec<Ticket>,
 }
+impl<'a> TicketStore {
+    fn to_dos(&'a self) -> Vec<&'a Ticket> {
+        self.tickets
+            .iter()
+            .filter(|ticket| ticket.status == Status::ToDo)
+            .collect()
+    }
+}
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Ticket {

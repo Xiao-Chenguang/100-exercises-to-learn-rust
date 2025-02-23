@@ -6,6 +6,8 @@
 // You also need to add a `get` method that takes as input a `TicketId`
 // and returns an `Option<&Ticket>`.
 
+use std::os::unix::net::SocketAddr;
+
 use ticket_fields::{TicketDescription, TicketTitle};
 
 #[derive(Clone)]
@@ -44,8 +46,20 @@ impl TicketStore {
         }
     }
 
-    pub fn add_ticket(&mut self, ticket: Ticket) {
+    pub fn add_ticket(&mut self, ticket_draft: TicketDraft) -> TicketId {
+        let TicketDraft { title, description } = ticket_draft;
+        let tid = TicketId(self.tickets.len() as u64);
+        let ticket = Ticket {
+            title: title,
+            description: description,
+            status: Status::ToDo,
+            id: tid,
+        };
         self.tickets.push(ticket);
+        tid
+    }
+    pub fn get(&self, tid: TicketId) -> Option<&Ticket> {
+        self.tickets.get(tid.0 as usize)
     }
 }
 
