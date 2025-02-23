@@ -4,7 +4,7 @@ pub mod data;
 pub mod store;
 
 pub enum Command {
-    Insert(todo!()),
+    Insert(data::TicketDraft),
 }
 
 // Start the system by spawning the server thread.
@@ -20,4 +20,14 @@ pub fn launch() -> Sender<Command> {
 //  Enter a loop: wait for a command to show up in
 //  the channel, then execute it, then start waiting
 //  for the next command.
-pub fn server(receiver: Receiver<Command>) {}
+pub fn server(receiver: Receiver<Command>) {
+    let mut ts = store::TicketStore::new();
+    loop {
+        match receiver.recv() {
+            Ok(Command::Insert(ticket_fields)) => {
+                ts.add_ticket(ticket_fields);
+            }
+            Err(_) => panic!("receive error"),
+        };
+    }
+}
