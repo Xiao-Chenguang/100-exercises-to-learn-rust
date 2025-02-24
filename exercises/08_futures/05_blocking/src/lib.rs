@@ -8,11 +8,13 @@ use tokio::net::TcpListener;
 pub async fn echo(listener: TcpListener) -> Result<(), anyhow::Error> {
     loop {
         let (socket, _) = listener.accept().await?;
-        let mut socket = socket.into_std()?;
-        socket.set_nonblocking(false)?;
-        let mut buffer = Vec::new();
-        socket.read_to_end(&mut buffer)?;
-        socket.write_all(&buffer)?;
+        tokio::task::spawn_blocking(|| {
+            let mut socket = socket.into_std().unwrap();
+            socket.set_nonblocking(false).unwrap();
+            let mut buffer = Vec::new();
+            socket.read_to_end(&mut buffer).unwrap();
+            socket.write_all(&buffer).unwrap();
+        });
     }
 }
 

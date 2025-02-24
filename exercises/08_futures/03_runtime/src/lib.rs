@@ -10,7 +10,19 @@ where
     // `T` cannot be cloned. How do you share it between the two server tasks?
     T: Display + Send + Sync + 'static,
 {
-    todo!()
+    let reply = std::sync::Arc::new(reply);
+    for task in [first, second] {
+        let reply = reply.clone();
+        tokio::spawn(async move {
+            loop {
+                let (mut stream, _) = task.accept().await.unwrap();
+                let reply = reply.to_string();
+                tokio::spawn(async move {
+                    stream.write_all(reply.as_bytes()).await.unwrap();
+                });
+            }
+        });
+    }
 }
 
 #[cfg(test)]
